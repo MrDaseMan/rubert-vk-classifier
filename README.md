@@ -16,7 +16,7 @@ Folder [reports](./reports) contains reports of the trained model after using it
 
 Folder [dataset](./dataset) contains the dataset files in `.csv` format.
 
-Folder [output](./output) contains the output trained model files.
+Folder [output](./output) contains the output trained model files in `.pt` format.
 
 ## RU
 
@@ -34,4 +34,4 @@ Folder [output](./output) contains the output trained model files.
 
 Папка [dataset](./dataset) содержит датасеты в формате `.csv`.
 
-Папка [output](./output) содержит файлы модели после обучения.
+Папка [output](./output) содержит файлы модели после обучения в формате `.pt`.
