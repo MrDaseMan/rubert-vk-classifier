@@ -28,7 +28,7 @@ An initialization method for a class. It takes in parameters for texts, targets,
 
 A special method in a class. It returns the length of the texts attribute of an
 
-## \_\_getitem__()
+### \_\_getitem__()
 
 A method for a dataset class. It retrieves an item from the dataset at the given index. It takes the index as an argument and returns a dictionary containing various properties of the item, such as the original text, input token IDs, attention mask, and target values. The method uses a tokenizer to encode the text and prepares it for further processing.
 
@@ -108,7 +108,7 @@ This code defines a predict function that takes a text input and returns the pre
 
 Специальный метод в классе. Он возвращает длину атрибута texts в классе
 
-## \_\_getitem__()
+### \_\_getitem__()
 
 Метод для класса набора данных. Он извлекает элемент из набора данных по заданному индексу. В качестве аргумента принимается индекс и возвращается словарь, содержащий различные свойства элемента, такие как исходный текст, идентификаторы входных маркеров, маска внимания и целевые значения. Метод использует токенизатор для кодирования текста и подготовки его к дальнейшей обработке.
 
