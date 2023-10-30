@@ -1,6 +1,6 @@
 # RuBert VK Classifier
 
-## EN
+# EN
 
 The main logic is located in the file [main.ipynb](./main.ipynb)
 
@@ -18,9 +18,23 @@ Folder [dataset](./dataset) contains the dataset files in `.csv` format.
 
 Folder [output](./output) contains the output trained model files in `.pt` format.
 
-### [BertClassifier](./bert_classifier) explanation
+## [CustomDataset](./bert_dataset) explanation
 
-#### \_\_init__()
+### \_\_init__()
+
+An initialization method for a class. It takes in parameters for texts, targets, tokenizer, and max_len. It assigns the parameter values to instance variables with the same names.
+
+### \_\_len__()
+
+A special method in a class. It returns the length of the texts attribute of an
+
+## \_\_getitem__()
+
+A method for a dataset class. It retrieves an item from the dataset at the given index. It takes the index as an argument and returns a dictionary containing various properties of the item, such as the original text, input token IDs, attention mask, and target values. The method uses a tokenizer to encode the text and prepares it for further processing.
+
+## [BertClassifier](./bert_classifier) explanation
+
+### \_\_init__()
 
 A class constructor (__init__) initializes an object with various parameters. It takes in the paths to a model and a tokenizer, and also has optional parameters for the number of classes, number of epochs, maximum length of texts, and the path to save the model.
 
@@ -28,15 +42,15 @@ Inside the constructor, the code loads the model and tokenizer from the given pa
 
 It then gets the number of output features from a specific layer of the model, and modifies the classifier of the model to have the specified number of classes. Finally, it moves the model to the specified device.
 
-#### predict()
+### predict()
 
 A method called preparation initializes datasets and data loaders for training and validation. It takes in training and validation data and labels as parameters. The method creates two datasets (train_set and valid_set) using a custom dataset class called CustomDataset, and two data loaders (train_loader and valid_loader) using the DataLoader class. It also initializes some helper objects such as an optimizer (AdamW), a scheduler (get_linear_schedule_with_warmup), and a loss function (CrossEntropyLoss).
 
-#### fit()
+### fit()
 
 A method fit() trains a model using the training data. It iterates over the training data, performs forward and backward propagation, updates the model parameters, and calculates the training accuracy and loss. The method returns the training accuracy and loss as a tuple.
 
-#### eval()
+### eval()
 
 A method called eval evaluates a model on a validation set and returns the accuracy and loss. It does the following:
 
@@ -52,7 +66,7 @@ Initializes empty lists for losses and a counter for correct predictions.
 
 Returns the accuracy and loss.
 
-#### train()
+### train()
 
 A train method trains a model for a specified number of epochs. It initializes a variable best_accuracy to 0 and then iterates over each epoch.
 
@@ -62,11 +76,11 @@ If the validation accuracy is greater than the previous best accuracy, it saves 
 
 Finally, it loads the best model and assigns it to the self.model attribute.
 
-#### predict()
+### predict()
 
 This code defines a predict function that takes a text input and returns the predicted class label. It uses a tokenizer to encode the input text, and then passes the encoded input to a model for prediction. The predicted class label is determined by taking the argmax of the model's output logits.
 
-## RU
+# RU
 
 Вся основная логика находится в файле [main.ipynb](./main.ipynb)
 
@@ -84,7 +98,22 @@ This code defines a predict function that takes a text input and returns the pre
 
 Папка [output](./output) содержит файлы модели после обучения в формате `.pt`.
 
-### Описание класса [BertClassifier](./bert_classifier)
+## Описание класса [CustomDataset](./bert_dataset)
+
+### \_\_init__()
+
+Метод инициализации класса. Он принимает параметры texts, targets, tokenizer и max_len. Значения параметров присваиваются переменным экземпляра с теми же именами.
+
+### \_\_len__()
+
+Специальный метод в классе. Он возвращает длину атрибута texts в классе
+
+## \_\_getitem__()
+
+Метод для класса набора данных. Он извлекает элемент из набора данных по заданному индексу. В качестве аргумента принимается индекс и возвращается словарь, содержащий различные свойства элемента, такие как исходный текст, идентификаторы входных маркеров, маска внимания и целевые значения. Метод использует токенизатор для кодирования текста и подготовки его к дальнейшей обработке.
+
+
+## Описание класса [BertClassifier](./bert_classifier)
 
 Конструктор класса (__init__) инициализирует объект с различными параметрами. Он принимает пути к модели и токенизатору, а также имеет необязательные параметры для количества классов, количества эпох, максимальной длины текстов и пути для сохранения модели.
 
@@ -92,15 +121,15 @@ This code defines a predict function that takes a text input and returns the pre
 
 После этого он получает количество выходных признаков с определенного слоя модели и модифицирует классификатор модели так, чтобы в нем было заданное количество классов. Наконец, модель перемещается на указанное устройство.
 
-#### predict()
+### predict()
 
 Метод preparation инициализирует наборы данных и загрузчики данных для обучения и проверки. В качестве параметров он принимает данные для обучения и проверки, а также метки. Метод создает два набора данных (train_set и valid_set) с помощью пользовательского класса CustomDataset и два загрузчика данных (train_loader и valid_loader) с помощью класса DataLoader. Также инициализируются некоторые вспомогательные объекты, такие как оптимизатор (AdamW), планировщик (get_linear_schedule_with_warmup) и функция потерь (CrossEntropyLoss).
 
-#### fit()
+### fit()
 
 Метод fit() обучает модель по обучающим данным. Он выполняет итерации по обучающим данным, прямое и обратное распространение, обновление параметров модели и вычисление точности и потерь при обучении. Метод возвращает точность обучения и потери в виде кортежа.
 
-#### eval()
+### eval()
 
 Метод под названием eval оценивает модель на валидационном множестве и возвращает точность и потери. Он выполняет следующие действия:
 
@@ -116,7 +145,7 @@ This code defines a predict function that takes a text input and returns the pre
 
 Возвращает значения точности и потерь.
 
-#### train()
+### train()
 
 Метод train обучает модель в течение заданного количества эпох. Он инициализирует переменную best_accuracy равной 0, а затем выполняет итерации по каждой эпохе.
 
@@ -126,6 +155,6 @@ This code defines a predict function that takes a text input and returns the pre
 
 Наконец, загружается лучшая модель и присваивается атрибуту self.model.
 
-#### predict()
+### predict()
 
 Этот код определяет функцию predict, которая принимает текстовый входной сигнал и возвращает предсказанную метку класса. Она использует токенизатор для кодирования входного текста, а затем передает закодированный текст модели для предсказания. Предсказанная метка класса определяется путем взятия argmax выходных логарифмов модели.
