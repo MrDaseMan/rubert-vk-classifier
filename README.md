@@ -18,7 +18,7 @@ Folder [dataset](./dataset) contains the dataset files in `.csv` format.
 
 Folder [output](./output) contains the output trained model files in `.pt` format.
 
-## [CustomDataset](./bert_dataset) explanation
+## [CustomDataset](./bert_dataset.py) explanation
 
 ### \_\_init__()
 
@@ -32,7 +32,7 @@ A special method in a class. It returns the length of the texts attribute of an
 
 A method for a dataset class. It retrieves an item from the dataset at the given index. It takes the index as an argument and returns a dictionary containing various properties of the item, such as the original text, input token IDs, attention mask, and target values. The method uses a tokenizer to encode the text and prepares it for further processing.
 
-## [BertClassifier](./bert_classifier) explanation
+## [BertClassifier](./bert_classifier.py) explanation
 
 ### \_\_init__()
 
@@ -98,7 +98,7 @@ This code defines a predict function that takes a text input and returns the pre
 
 Папка [output](./output) содержит файлы модели после обучения в формате `.pt`.
 
-## Описание класса [CustomDataset](./bert_dataset)
+## Описание класса [CustomDataset](./bert_dataset.py)
 
 ### \_\_init__()
 
@@ -113,7 +113,7 @@ This code defines a predict function that takes a text input and returns the pre
 Метод для класса набора данных. Он извлекает элемент из набора данных по заданному индексу. В качестве аргумента принимается индекс и возвращается словарь, содержащий различные свойства элемента, такие как исходный текст, идентификаторы входных маркеров, маска внимания и целевые значения. Метод использует токенизатор для кодирования текста и подготовки его к дальнейшей обработке.
 
 
-## Описание класса [BertClassifier](./bert_classifier)
+## Описание класса [BertClassifier](./bert_classifier.py)
 
 Конструктор класса (__init__) инициализирует объект с различными параметрами. Он принимает пути к модели и токенизатору, а также имеет необязательные параметры для количества классов, количества эпох, максимальной длины текстов и пути для сохранения модели.
 
