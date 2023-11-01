@@ -25,7 +25,7 @@ class BertClassifier:
         """
         self.model = BertForSequenceClassification.from_pretrained(model_path)
         self.tokenizer = BertTokenizer.from_pretrained(tokenizer_path)
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model_save_path=model_save_path
         self.max_len = max_len
         self.epochs = epochs
@@ -213,4 +213,4 @@ class BertClassifier:
         Returns:
             None
         """
-        self.model = torch.load(model_path)
+        self.model = torch.load(model_path, map_location=self.device)
