@@ -2,7 +2,9 @@
 
 # EN
 
-The main logic is located in the file [main.ipynb](./main.ipynb)
+The main model training logic is located in the file [train.ipynb](./train.ipynb)
+
+Example usage: [work.ipynb](./work.ipynb)
 
 The model allows to determine the expected group of directions by the student's public communities preferences in VK.
 
@@ -80,9 +82,15 @@ Finally, it loads the best model and assigns it to the self.model attribute.
 
 This code defines a predict function that takes a text input and returns the predicted class label. It uses a tokenizer to encode the input text, and then passes the encoded input to a model for prediction. The predicted class label is determined by taking the argmax of the model's output logits.
 
+### load_model()
+
+This code defines a function called load_model that loads a model from a specified path. The function returns the loaded model.
+
 # RU
 
-Вся основная логика находится в файле [main.ipynb](./main.ipynb)
+Вся основная логика обучения модели находится в файле [train.ipynb](./train.ipynb)
+
+Пример использования обученной модели: [work.ipynb](./work.ipynb)
 
 Модель позволяет определять предполагаемую группу направлений поступления студента по его предпочтениям в выборе публичных сообществ в VK.
 
@@ -158,3 +166,7 @@ This code defines a predict function that takes a text input and returns the pre
 ### predict()
 
 Этот код определяет функцию predict, которая принимает текстовый входной сигнал и возвращает предсказанную метку класса. Она использует токенизатор для кодирования входного текста, а затем передает закодированный текст модели для предсказания. Предсказанная метка класса определяется путем взятия argmax выходных логарифмов модели.
+
+### load_model()
+
+This code defines a function called load_model that loads a model from a specified path. The function returns the loaded model.

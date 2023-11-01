@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 
-# Класс датасета, наследуемый от Dataset
+# Dataset class, inherits from torch
 class CustomDataset(Dataset):
 
   def __init__(self, texts, targets, tokenizer, max_len=512):

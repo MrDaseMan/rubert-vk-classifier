@@ -47,8 +47,8 @@ class BertClassifier:
             None
         """
         # create datasets
-        self.train_set = CustomDataset(X_train, y_train, self.tokenizer)    # Init train set
-        self.valid_set = CustomDataset(X_valid, y_valid, self.tokenizer)    # Init validation set
+        self.train_set = CustomDataset(X_train, y_train, self.tokenizer, max_len=self.max_len)    # Init train set
+        self.valid_set = CustomDataset(X_valid, y_valid, self.tokenizer, max_len=self.max_len)    # Init validation set
 
         # create data loaders
         """
@@ -202,3 +202,13 @@ class BertClassifier:
         prediction = torch.argmax(outputs.logits, dim=1).cpu().numpy()[0]
 
         return prediction
+
+    def load_model(self, model_path):
+        """
+        Loads the model from a given path.
+        Args:
+            model_path (str): The path to the model.
+        Returns:
+            None
+        """
+        self.model = torch.load(model_path)
