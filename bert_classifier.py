@@ -206,8 +206,10 @@ class BertClassifier:
     def load_model(self, model_path):
         """
         Loads the model from a given path.
+        
         Args:
             model_path (str): The path to the model.
+
         Returns:
             None
         """
