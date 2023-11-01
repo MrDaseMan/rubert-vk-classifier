@@ -169,4 +169,4 @@ This code defines a function called load_model that loads a model from a specifi
 
 ### load_model()
 
-This code defines a function called load_model that loads a model from a specified path. The function returns the loaded model.
+Этот код определяет функцию load_model, которая загружает модель из указанного пути. Функция возвращает модель.
