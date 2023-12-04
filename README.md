@@ -1,6 +1,50 @@
 # RuBert VK Classifier
 
-# EN
+[Русская версия](./README.md)
+|
+[English version](./README.md)
+
+
+
+## Contents
+
+1. [Structure and model classes](README.md#structure-and-model-classes)
+
+2. [Description of the class CustomDataset](README.md#description-of-the-class-customdataset)
+
+    2.1 [\_\_init__()](README.md#\_\_init__)
+
+    2.2 [\_\_len__()](README.md#\_\_len__)
+
+    2.3 [\_\_getitem__()](README.md#\_\_getitem__)
+
+3. [Description of the class BertClassifier](README.md#description-of-the-class-bertclassifier)
+
+    3.1 [\_\_init__()](README.md#\_\_init__)
+
+    3.2 [predict()](README.md#predict)
+
+    3.3 [fit()](README.md#fit)
+
+    3.4 [eval()](README.md#eval)
+
+4. [Model training](README.md#model-training)
+
+    4.1 [Load data for training and validation](README.md#load-data-for-training-and-validation)
+
+    4.2 [Model training](README.md#model-training)
+
+    4.3 [Model evaluation](README.md#model-evaluation)
+
+    4.4 [Saving the model](README.md#saving-the-model)
+
+5. [Using the trained model](README.md#using-the-trained-model)
+
+    5.1 [Load the model](README.md#load-the-model)
+
+    5.2 [Label prediction](README.md#label-prediction)
+
+## Structure and model classes
 
 The main model training logic is located in the file [train.ipynb](./train.ipynb)
 
@@ -86,87 +130,176 @@ This code defines a predict function that takes a text input and returns the pre
 
 This code defines a function called load_model that loads a model from a specified path. The function returns the loaded model.
 
-# RU
-
-Вся основная логика обучения модели находится в файле [train.ipynb](./train.ipynb)
-
-Пример использования обученной модели: [work.ipynb](./work.ipynb)
-
-Модель позволяет определять предполагаемую группу направлений поступления студента по его предпочтениям в выборе публичных сообществ в VK.
-
-Файл [bert_dataset.py](./bert_dataset.py) содержит основную логику (класс) хранения и нормализации датасета на этапе обучения.
-
-Файл [bert_classifier.py](./bert_classifier.py) содержит класс, нацеленный на работу с непосредственно моделью (обучение, предсказание).
-
-В папке [trained_models](./trained_models) можно найти предобученные модели.
-
-Папка [reports](./reports) содержит отчеты о процессе использования модели на этапе тестирования.
-
-Папка [dataset](./dataset) содержит датасеты в формате `.csv`.
-
-Папка [output](./output) содержит файлы модели после обучения в формате `.pt`.
-
-## Описание класса [CustomDataset](./bert_dataset.py)
-
-### \_\_init__()
-
-Метод инициализации класса. Он принимает параметры texts, targets, tokenizer и max_len. Значения параметров присваиваются переменным экземпляра с теми же именами.
-
-### \_\_len__()
-
-Специальный метод в классе. Он возвращает длину атрибута texts в классе
-
-### \_\_getitem__()
-
-Метод для класса набора данных. Он извлекает элемент из набора данных по заданному индексу. В качестве аргумента принимается индекс и возвращается словарь, содержащий различные свойства элемента, такие как исходный текст, идентификаторы входных маркеров, маска внимания и целевые значения. Метод использует токенизатор для кодирования текста и подготовки его к дальнейшей обработке.
 
 
-## Описание класса [BertClassifier](./bert_classifier.py)
+## Model training
 
-Конструктор класса (__init__) инициализирует объект с различными параметрами. Он принимает пути к модели и токенизатору, а также имеет необязательные параметры для количества классов, количества эпох, максимальной длины текстов и пути для сохранения модели.
+The complete code for the model training example can be found in the [train.ipynb](./train.ipynb) file.
 
-Внутри конструктора код загружает модель и токенизатор по заданным путям, устанавливает устройство - CUDA, если доступно, или CPU, задает максимальную длину текстов и количество эпох.
+The following steps are required to train the model:
 
-После этого он получает количество выходных признаков с определенного слоя модели и модифицирует классификатор модели так, чтобы в нем было заданное количество классов. Наконец, модель перемещается на указанное устройство.
+* Load the training and validation data.
+* Initialize the model.
+* Train the model.
+* Evaluate the model.
+* Save the model.
 
-### predict()
+### Load data for training and validation
 
-Метод preparation инициализирует наборы данных и загрузчики данных для обучения и проверки. В качестве параметров он принимает данные для обучения и проверки, а также метки. Метод создает два набора данных (train_set и valid_set) с помощью пользовательского класса CustomDataset и два загрузчика данных (train_loader и valid_loader) с помощью класса DataLoader. Также инициализируются некоторые вспомогательные объекты, такие как оптимизатор (AdamW), планировщик (get_linear_schedule_with_warmup) и функция потерь (CrossEntropyLoss).
+You can use any data loading environment to load data. For example, you can use the pandas library to load data from a CSV file.
+(The [train.csv](./dataset/train.csv) and [validate.csv](./dataset/validate.csv) files will be used for this example.)
 
-### fit()
+```python
+import pandas as pd
 
-Метод fit() обучает модель по обучающим данным. Он выполняет итерации по обучающим данным, прямое и обратное распространение, обновление параметров модели и вычисление точности и потерь при обучении. Метод возвращает точность обучения и потери в виде кортежа.
+train_data = pd.read_csv('train.csv')
+validate_data = pd.read_csv('validate.csv')
+```
 
-### eval()
+### Initializing the model
 
-Метод под названием eval оценивает модель на валидационном множестве и возвращает точность и потери. Он выполняет следующие действия:
+The [BertClassifier](./bert_classifier.py) class is used to initialize the model.
 
-* Переводит модель в режим оценки.
-Инициализирует пустые списки для потерь и счетчик для правильных предсказаний.
-* Итерирует загрузчик валидации, который предоставляет пакеты данных.
-* Перемещает входные данные, маску внимания и цели на устройство (например, GPU).
-* Пропускает входные данные через модель для получения выходных данных.
-* Вычисляет предсказанные метки классов и потери, используя логиты (выход модели до применения softmax).
-* Обновляет счетчик правильных предсказаний и добавляет значение потерь в список.
-* Вычисляется точность путем деления количества правильных предсказаний на размер валидационного множества.
-* Вычисляет среднее значение потерь из списка потерь.
+``` ``python
+from bert_classifier import BertClassifier
 
-Возвращает значения точности и потерь.
+classifier = BertClassifier(
+    model_path='cointegrated/rubert-tiny', # Path to the repository with the model to be trained
+    tokenizer_path='cointegrated/rubert-tiny', # Path to tokenizer
+    n_classes=41, # Number of classes to train
+    epochs=60, # Number of training epochs
+    max_len=512, # Maximum text size
+    model_save_path='./output/model.pt' # Path to save the model
+)
+```
+Accepted as arguments are:
 
-### train()
+* model_path - path to the repository with the model to be retrained
+* tokenizer_path - path to tokenizer
+* n_classes - number of classes to be trained
+* epochs - number of training epochs
+* max_len - maximum text size
+* model_save_path - path to save the model
 
-Метод train обучает модель в течение заданного количества эпох. Он инициализирует переменную best_accuracy равной 0, а затем выполняет итерации по каждой эпохе.
+```python
+classifier = BertClassifier(
+    model_path='cointegrated/rubert-tiny',
+    tokenizer_path='cointegrated/rubert-tiny',
+    n_classes=41,
+    epochs=60,
+    max_len=512,
+    model_save_path='./output/model.pt'.
+)
+```
 
-В течение каждой эпохи вызывается метод fit для обучения модели и выводится значение потерь и точности обучения. Затем вызывается метод eval для оценки модели на валидационном множестве и выводится значение потерь и точности при валидации.
+Then we connect the model to the training and validation data.
 
-Если точность проверки превышает предыдущую наилучшую точность, то модель сохраняется и обновляется best_accuracy до нового значения.
+``` ``python
+classifier.preparation(
+    X_train=list(train_data['groups']), # Training fields of the table with text
+    y_train=list(train_data['code']), # Training table fields with actual group codes
+    X_valid=list(valid_data['groups']), # Validating fields of the table with text
+    y_valid=list(valid_data['code']), # Validating table fields with real group codes
+)
+```
 
-Наконец, загружается лучшая модель и присваивается атрибуту self.model.
+Accepted as arguments are:
 
-### predict()
+* X_train - training fields of the table with text
+* y_train - training fields of the table with real group codes
+* X_valid - validating fields of the table with text
+* y_valid - validating table fields with real group codes
 
-Этот код определяет функцию predict, которая принимает текстовый входной сигнал и возвращает предсказанную метку класса. Она использует токенизатор для кодирования входного текста, а затем передает закодированный текст модели для предсказания. Предсказанная метка класса определяется путем взятия argmax выходных логарифмов модели.
+### Training the model
 
-### load_model()
+The [train()](./bert_classifier.py) method is used to train the model.
 
-Этот код определяет функцию load_model, которая загружает модель из указанного пути. Функция возвращает модель.
+```python
+classifier.train()
+```
+
+### Model evaluation
+
+The `precision_recall_fscore_support()` function from the `sklearn.metrics` library is used to estimate the model.
+
+`` ``python
+from sklearn.metrics import precision_recall_fscore_support
+
+test_data = pd.read_csv('./dataset/test.csv')
+labels = list(test_data['code'])
+
+predictions = [classifier.predict(t) for t in texts]
+
+precision, recall, f1score = precision_recall_fscore_support(labels, predictions, average='macro', zero_division=0)[:3]
+```
+
+We get three metrics:
+
+* precision
+* recall - completeness
+* f1score - F-measure
+
+````python
+print(f'precision: {precision}')
+print(f'recall: {recall}')
+print(f'f1score: {f1score}')
+```
+
+### Saving the model
+
+The model is automatically saved to the `output` folder.
+
+## Using the trained model
+
+You can see the full code for an example of how to use the model in the file [work.ipynb](./work.ipynb).
+
+To use the model, the following steps must be performed:
+
+* Get the text to be checked. (Get it in any convenient way)
+* Load the model.
+* Predict the label for the received text.
+
+### Load the model
+
+```python
+from bert_classifier import BertClassifier
+
+classifier = BertClassifier(
+    model_path='cointegrated/rubert-tiny',
+    tokenizer_path='cointegrated/rubert-tiny',
+    n_classes=41,
+    epochs=60,
+    max_len=512,
+    model_save_path='./output/model.pt'.
+)
+```
+
+The constructor accepts as arguments:
+
+* model_path - path to the repository with the source model
+* tokenizer_path - path to tokenizer
+* n_classes - number of classes for training
+* epochs - number of training epochs
+* max_len - maximum text size
+* model_save_path - path to the saved model
+
+### Label prediction
+
+The [predict()](./bert_classifier.py) method is used for label prediction.
+
+In our case, the data for validation will be taken from table [test.csv](./dataset/test.csv) using pandas library.
+
+```python
+import pandas as pd
+
+test_data = pd.read_csv('./dataset/test.csv')
+texts = list(test_data['groups'])
+
+predictions = [classifier.predict(t) for t in texts]
+```
+
+Output the predictions.
+
+````python
+print(predictions)
+```
