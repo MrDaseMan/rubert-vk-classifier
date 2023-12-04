@@ -1,6 +1,6 @@
 # RuBert VK Classifier
 
-[Русская версия](./README.md)
+[Русская версия](./README.ru.md)
 |
 [English version](./README.md)
 
@@ -222,7 +222,7 @@ classifier.train()
 
 The `precision_recall_fscore_support()` function from the `sklearn.metrics` library is used to estimate the model.
 
-`` ``python
+```python
 from sklearn.metrics import precision_recall_fscore_support
 
 test_data = pd.read_csv('./dataset/test.csv')
@@ -239,7 +239,7 @@ We get three metrics:
 * recall - completeness
 * f1score - F-measure
 
-````python
+```python
 print(f'precision: {precision}')
 print(f'recall: {recall}')
 print(f'f1score: {f1score}')
@@ -300,6 +300,6 @@ predictions = [classifier.predict(t) for t in texts]
 
 Output the predictions.
 
-````python
+```python
 print(predictions)
 ```
