@@ -92,6 +92,8 @@ It then gets the number of output features from a specific layer of the model, a
 
 A method called preparation initializes datasets and data loaders for training and validation. It takes in training and validation data and labels as parameters. The method creates two datasets (train_set and valid_set) using a custom dataset class called CustomDataset, and two data loaders (train_loader and valid_loader) using the DataLoader class. It also initializes some helper objects such as an optimizer (AdamW), a scheduler (get_linear_schedule_with_warmup), and a loss function (CrossEntropyLoss).
 
+returns the object containing the predicted class and all classes probabilities.
+
 ### fit()
 
 A method fit() trains a model using the training data. It iterates over the training data, performs forward and backward propagation, updates the model parameters, and calculates the training accuracy and loss. The method returns the training accuracy and loss as a tuple.
