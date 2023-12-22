@@ -162,7 +162,7 @@ validate_data = pd.read_csv('validate.csv')
 
 The [BertClassifier](./bert_classifier.py) class is used to initialize the model.
 
-``` ``python
+```python
 from bert_classifier import BertClassifier
 
 classifier = BertClassifier(
@@ -196,7 +196,7 @@ classifier = BertClassifier(
 
 Then we connect the model to the training and validation data.
 
-``` ``python
+```python
 classifier.preparation(
     X_train=list(train_data['groups']), # Training fields of the table with text
     y_train=list(train_data['code']), # Training table fields with actual group codes
